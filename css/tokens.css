@@ -1,0 +1,84 @@
+/* =====================================================================
+   NEXFIT 2.0 · Design tokens
+   Tema claro é o padrão (melhor leitura). Todo texto passa no contraste
+   WCAG AA (4,5:1). O verde-lima #A3E635 é usado como FUNDO de botão com
+   texto escuro — nunca como cor de texto sobre fundo claro.
+   ===================================================================== */
+:root {
+  --scale: 1;                       /* tamanho da letra: 1 · 1.15 · 1.3 */
+  --font: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-num: "Inter", system-ui, sans-serif;
+
+  /* Paleta da marca */
+  --lime: #A3E635;
+  --lime-strong: #84CC16;
+  --graphite: #111827;
+
+  /* Tema claro */
+  --bg: #F4F6F8;
+  --surface: #FFFFFF;
+  --surface-2: #EEF2F5;
+  --surface-3: #E2E8EE;
+  --border: #D5DDE5;
+  --text: #111827;
+  --text-2: #4B5563;             /* 7.5:1 no branco */
+  --text-3: #5B6472;             /* 6:1 no branco */
+  --accent: #A3E635;             /* fundo de destaque */
+  --on-accent: #111827;          /* texto sobre o lima: 13:1 */
+  --accent-ink: #3F6212;         /* verde para texto/ícone no claro: 7:1 */
+  --accent-soft: #ECFCCB;
+  --ok: #15803D;  --ok-soft: #DCFCE7;
+  --warn: #B45309; --warn-soft: #FEF3C7;
+  --danger: #B91C1C; --danger-soft: #FEE2E2;
+  --water: #0369A1; --water-soft: #E0F2FE;
+  --prot: #7C3AED; --carb: #0369A1; --fat: #B45309;
+  --shadow: 0 1px 2px rgba(17,24,39,.06), 0 4px 16px rgba(17,24,39,.06);
+  --shadow-lg: 0 12px 40px rgba(17,24,39,.18);
+  --focus: 0 0 0 3px var(--surface), 0 0 0 6px #2563EB;
+  --overlay: rgba(17,24,39,.55);
+
+  --r-sm: 10px; --r: 16px; --r-lg: 24px; --r-pill: 999px;
+  --tap: 56px;                    /* área mínima de toque */
+  --tap-lg: 72px;
+  --sidebar: 256px;
+  --tabbar: 76px;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  color-scheme: light;
+}
+
+/* Tema escuro (escolhido nos Ajustes) */
+:root[data-theme="dark"] {
+  --bg: #111827;
+  --surface: #202938;
+  --surface-2: #283345;
+  --surface-3: #334155;
+  --border: #3A4658;
+  --text: #FFFFFF;
+  --text-2: #CBD5E1;             /* 10:1 */
+  --text-3: #AAB4C3;             /* 7:1 */
+  --accent-ink: #A3E635;
+  --accent-soft: #2B3A1A;
+  --ok: #4ADE80;  --ok-soft: #14301F;
+  --warn: #FBBF24; --warn-soft: #3A2E12;
+  --danger: #F87171; --danger-soft: #3B1C1C;
+  --water: #38BDF8; --water-soft: #12304A;
+  --prot: #C4B5FD; --carb: #7DD3FC; --fat: #FCD34D;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,.5);
+  --focus: 0 0 0 3px var(--bg), 0 0 0 6px #A3E635;
+  --overlay: rgba(0,0,0,.7);
+  color-scheme: dark;
+}
+
+/* "Automático" segue o celular */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --bg: #111827; --surface: #202938; --surface-2: #283345; --surface-3: #334155; --border: #3A4658;
+    --text: #FFFFFF; --text-2: #CBD5E1; --text-3: #AAB4C3; --accent-ink: #A3E635; --accent-soft: #2B3A1A;
+    --ok: #4ADE80; --ok-soft: #14301F; --warn: #FBBF24; --warn-soft: #3A2E12; --danger: #F87171; --danger-soft: #3B1C1C;
+    --water: #38BDF8; --water-soft: #12304A; --prot: #C4B5FD; --carb: #7DD3FC; --fat: #FCD34D;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25); --shadow-lg: 0 16px 48px rgba(0,0,0,.5);
+    --focus: 0 0 0 3px var(--bg), 0 0 0 6px #A3E635; --overlay: rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+}

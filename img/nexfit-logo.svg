@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" role="img" aria-label="NEXFIT">
-<defs><linearGradient id="m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f7f8"/><stop offset=".55" stop-color="#b9c4cb"/><stop offset="1" stop-color="#7d8a93"/></linearGradient>
-<filter id="g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-<g filter="url(#g)"><path d="M248 40h52l80 118V40h52v200h-52l-80-118v118h-52z" fill="#0b1410" stroke="#00e77a" stroke-width="6" stroke-linejoin="round"/></g>
-<g fill="#00e77a"><rect x="128" y="132" width="122" height="16" rx="4"/><rect x="430" y="132" width="122" height="16" rx="4"/><rect x="150" y="104" width="22" height="72" rx="6"/><rect x="508" y="104" width="22" height="72" rx="6"/><rect x="186" y="114" width="14" height="52" rx="5"/><rect x="480" y="114" width="14" height="52" rx="5"/></g>
-<text x="340" y="346" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="104" letter-spacing="6" fill="url(#m)">NEX<tspan fill="#00e77a">FIT</tspan></text>
-<g stroke="#00e77a" stroke-width="2"><line x1="70" y1="381" x2="160" y2="381"/><line x1="520" y1="381" x2="610" y2="381"/></g>
-<text x="340" y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" letter-spacing="5" fill="#9cb9aa">TREINO · DIETA · FOCO</text>
-</svg>
