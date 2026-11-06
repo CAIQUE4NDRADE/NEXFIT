@@ -1,6 +1,6 @@
 # NEXFIT 2.0
 
-**Train. Track. Evolve.** — app de treino, comida e evolução feito para ser fácil para qualquer pessoa, inclusive quem não tem costume com tecnologia.
+**Treine. Acompanhe. Evolua.** — app de treino, comida e evolução feito para ser fácil para qualquer pessoa, inclusive quem não tem costume com tecnologia.
 
 🔗 **https://caique4ndrade.github.io/NEXFIT/**
 

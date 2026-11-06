@@ -130,3 +130,5 @@ body.live #toast { top: calc(max(12px, env(safe-area-inset-top)) + 64px); }
 .chip { white-space: nowrap; }
 .card-head h2 { min-width: 0; }
 .novo { color: var(--c-comida); }
+.brand-tag { letter-spacing: .03em; font-size: .6rem; }
+.sidebar .brand { gap: 8px; margin-left: 2px !important; }

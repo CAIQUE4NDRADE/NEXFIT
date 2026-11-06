@@ -73,7 +73,7 @@ function shell() {
   document.getElementById('app').innerHTML = `
   <a class="skip" href="#main">Pular para o conteúdo</a>
   <aside class="sidebar" aria-label="Menu principal">
-    <a class="brand" href="#/hoje">${brandMark()}<span><span class="brand-name">NEX<b>FIT</b></span><span class="brand-tag">TRAIN · TRACK · EVOLVE</span></span></a>
+    <a class="brand" href="#/hoje">${brandMark()}<span><span class="brand-name">NEX<b>FIT</b></span><span class="brand-tag">TREINE · ACOMPANHE · EVOLUA</span></span></a>
     <nav class="stack" style="gap:6px">${navLinks('side-link')}
       <div class="side-sep"></div>
       <a class="side-link" data-tab="biblioteca-side" href="#/biblioteca">${icon('library')}<span>Biblioteca</span></a>
@@ -82,7 +82,7 @@ function shell() {
     <p class="side-foot">NEXFIT 2.0 · seus dados ficam com você</p>
   </aside>
   <header class="topbar">
-    <a class="brand" href="#/hoje" aria-label="NEXFIT, início">${brandMark()}<span><span class="brand-name">NEX<b>FIT</b></span><span class="brand-tag">TRAIN · TRACK · EVOLVE</span></span></a>
+    <a class="brand" href="#/hoje" aria-label="NEXFIT, início">${brandMark()}<span><span class="brand-name">NEX<b>FIT</b></span><span class="brand-tag">TREINE · ACOMPANHE · EVOLUA</span></span></a>
     <span id="cloud-slot"></span>
     <a class="top-btn" href="#/ajustes" data-tab="ajustes" aria-label="Ajustes">${icon('settings')}<span>Ajustes</span></a>
   </header>

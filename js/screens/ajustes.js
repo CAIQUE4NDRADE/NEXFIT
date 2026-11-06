@@ -53,7 +53,7 @@ function render() {
       <label class="btn btn-outline btn-lg btn-block">${icon('upload')}<span>Restaurar de um arquivo</span><input type="file" accept="application/json,.json" class="sr" data-change="aj-import"></label></div>`)}
 
     ${card(`${cardHead('Sobre', 'info')}
-      <p><b>NEXFIT 2.0</b> · Train. Track. Evolve.</p>
+      <p><b>NEXFIT 2.1</b> · Treine. Acompanhe. Evolua.</p>
       <p class="small muted" style="margin-top:6px">O NEXFIT ajuda a anotar e acompanhar o treino e a alimentação. Não substitui orientação de médico, nutricionista ou professor de educação física.</p>
       <p class="small muted" style="margin-top:6px">Valores dos alimentos: Tabela TACO 4ª edição (NEPA/UNICAMP). Ícones: Lucide.</p>
       <div style="margin-top:16px">${btn('Apagar todos os dados deste aparelho', { act: 'aj-apagar', ic: 'trash-2', variant: 'danger', block: true })}</div>`)}

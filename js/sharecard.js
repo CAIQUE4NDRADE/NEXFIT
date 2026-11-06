@@ -18,7 +18,7 @@ function desenhar(s) {
   N.forEach(([a, b], k) => k ? x.lineTo(a, b) : x.moveTo(a, b)); x.closePath(); x.fill();
   x.font = '800 64px Inter, Arial, sans-serif'; x.fillStyle = '#fff'; x.fillText('NEX', 220, 180); const w = x.measureText('NEX').width;
   x.fillStyle = '#A3E635'; x.fillText('FIT', 220 + w, 180);
-  x.font = '700 26px Arial'; x.fillStyle = '#94A3B8'; x.fillText('TRAIN · TRACK · EVOLVE', 222, 216);
+  x.font = '700 26px Arial'; x.fillStyle = '#94A3B8'; x.fillText('TREINE · ACOMPANHE · EVOLUA', 222, 216);
   // título
   x.fillStyle = '#A3E635'; x.font = '800 40px Arial'; x.fillText('TREINO CONCLUÍDO ✓', 80, 420);
   x.fillStyle = '#fff'; x.font = '800 86px Inter, Arial, sans-serif'; wrap(x, s.nome, 80, 520, 920, 96, 2);
