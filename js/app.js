@@ -79,7 +79,7 @@ function shell() {
       <a class="side-link" data-tab="biblioteca-side" href="#/biblioteca">${icon('library')}<span>Biblioteca</span></a>
       <a class="side-link" data-tab="ajustes" href="#/ajustes">${icon('settings')}<span>Ajustes</span></a>
     </nav>
-    <p class="side-foot">NEXFIT 2.0 · seus dados ficam com você</p>
+    <p class="side-foot">NEXFIT 2.1 · seus dados ficam com você<br>Desenvolvido por <b>Caique Andrade</b></p>
   </aside>
   <header class="topbar">
     <a class="brand" href="#/hoje" aria-label="NEXFIT, início">${brandMark()}<span><span class="brand-name">NEX<b>FIT</b></span><span class="brand-tag">TREINE · ACOMPANHE · EVOLUA</span></span></a>

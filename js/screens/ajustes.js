@@ -54,6 +54,7 @@ function render() {
 
     ${card(`${cardHead('Sobre', 'info')}
       <p><b>NEXFIT 2.1</b> · Treine. Acompanhe. Evolua.</p>
+      <p style="margin-top:6px">Desenvolvido por <b>Caique Andrade</b> · <a href="https://github.com/CAIQUE4NDRADE" target="_blank" rel="noopener">github.com/CAIQUE4NDRADE</a></p>
       <p class="small muted" style="margin-top:6px">O NEXFIT ajuda a anotar e acompanhar o treino e a alimentação. Não substitui orientação de médico, nutricionista ou professor de educação física.</p>
       <p class="small muted" style="margin-top:6px">Valores dos alimentos: Tabela TACO 4ª edição (NEPA/UNICAMP). Ícones: Lucide.</p>
       <div style="margin-top:16px">${btn('Apagar todos os dados deste aparelho', { act: 'aj-apagar', ic: 'trash-2', variant: 'danger', block: true })}</div>`)}

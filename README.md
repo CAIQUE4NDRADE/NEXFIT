@@ -36,6 +36,8 @@ supabase/schema.sql   banco (RLS em todas as tabelas)
 Sem build: HTML + JavaScript (módulos) puro. Para mexer, edite os arquivos e faça push — o GitHub Pages publica sozinho.
 
 ## Créditos
+Desenvolvido por **Caique Andrade** — [github.com/CAIQUE4NDRADE](https://github.com/CAIQUE4NDRADE).
+
 Alimentos: Tabela TACO 4ª ed. (NEPA/UNICAMP) via [taco-api](https://github.com/raulfdm/taco-api) (MIT). Ícones: [Lucide](https://lucide.dev) (ISC). Fontes: Atkinson Hyperlegible e Inter.
 
 O NEXFIT ajuda a anotar e acompanhar; não substitui médico, nutricionista ou profissional de educação física.

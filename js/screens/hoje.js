@@ -98,6 +98,7 @@ function render() {
       <div class="dash-main stack">${hero()}${numeros()}</div>
       <div class="dash-side stack">${semana()}${destaque()}</div>
     </div>
+    <p class="credits">NEXFIT · desenvolvido por <b>Caique Andrade</b></p>
   </div>`;
 }
 

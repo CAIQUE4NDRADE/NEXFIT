@@ -132,3 +132,6 @@ body.live #toast { top: calc(max(12px, env(safe-area-inset-top)) + 64px); }
 .novo { color: var(--c-comida); }
 .brand-tag { letter-spacing: .03em; font-size: .6rem; }
 .sidebar .brand { gap: 8px; margin-left: 2px !important; }
+.credits { text-align: center; color: var(--text-3); font-size: .82rem; margin-top: 8px; }
+.credits b, .side-foot b { color: var(--text-2); }
+@media (min-width: 1024px) { .credits { display: none; } }
