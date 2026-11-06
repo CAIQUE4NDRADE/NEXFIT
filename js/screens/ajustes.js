@@ -14,7 +14,7 @@ function render() {
   <div class="stack">
     ${card(`${cardHead('Leitura', 'a-large-small')}
       <p style="margin-bottom:8px"><b>Tamanho da letra</b></p>${seg('aj-letra', [['1', 'Normal'], ['1.15', 'Grande'], ['1.3', 'Muito grande']], String(pr.letra || 1))}
-      <p style="margin:18px 0 8px"><b>Cores</b></p>${seg('aj-tema', [['light', 'Claro'], ['dark', 'Escuro'], ['auto', 'Automático']], pr.tema || 'light')}
+      <p style="margin:18px 0 8px"><b>Cores</b></p>${seg('aj-tema', [['dark', 'Escuro'], ['light', 'Claro'], ['auto', 'Automático']], pr.tema || 'dark')}
       <p class="small muted" style="margin-top:8px">"Automático" segue o modo do celular.</p>`)}
 
     ${card(`${cardHead('Avisos durante o treino', 'bell')}
@@ -62,7 +62,7 @@ function render() {
 function after(root) { root.querySelector('#aj-desc')?.addEventListener('input', e => { const v = parseInt(e.target.value, 10); if (v >= 15) { state.perfil.descanso = v; save(); } }); }
 
 act('aj-letra', el => { state.prefs.letra = +el.dataset.v; save(); applyPrefs(); refresh(); });
-act('aj-tema', el => { state.prefs.tema = el.dataset.v; save(); applyPrefs(); refresh(); });
+act('aj-tema', el => { state.prefs.tema = el.dataset.v; state.prefs.temaEscolhido = true; save(); applyPrefs(); refresh(); });
 act('aj-sw', el => { state.prefs[el.id.replace('aj-', '')] = el.checked; save(); });
 act('aj-num', el => {
   const k = el.id.replace('aj-', '');

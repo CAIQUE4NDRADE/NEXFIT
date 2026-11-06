@@ -1,0 +1,132 @@
+/* =====================================================================
+   NEXFIT 2.1 · Camada visual premium
+   Tema escuro grafite + verde-lima como identidade. Números grandes,
+   um destaque por cartão, cores por área (treino, fogo, peso, comida, água).
+   ===================================================================== */
+:root {
+  --font-head: "Sora", "Inter", system-ui, sans-serif;
+  --c-treino: #A3E635; --c-fogo: #FB923C; --c-peso: #A78BFA; --c-comida: #FBBF24; --c-agua: #38BDF8;
+}
+:root[data-theme="light"] { --c-fogo: #C2410C; --c-peso: #6D28D9; --c-comida: #B45309; --c-agua: #0369A1; --c-treino: #3F6212; }
+:root[data-theme="dark"] {
+  --bg: #0E141F;
+  --surface: #182131;
+  --surface-2: #202B3D;
+  --surface-3: #2C3A50;
+  --border: #2A3648;
+}
+@media (prefers-color-scheme: dark) { :root[data-theme="auto"] { --bg: #0E141F; --surface: #182131; --surface-2: #202B3D; --surface-3: #2C3A50; --border: #2A3648; } }
+
+h1, h2, .hero-title, .feature-title, .brand-name, .stat-value, .tile-v, .live-name, .rest-clock, .hero-stats b { font-family: var(--font-head); letter-spacing: -.02em; }
+h1 { font-size: 2rem; font-weight: 800; }
+.hello { color: var(--text-2); font-weight: 700; font-size: 1.05rem; margin: 0 0 2px !important; }
+.brand-name { font-weight: 800; }
+
+/* entrada suave das telas */
+main > * { animation: enter .28s var(--ease) both; }
+@keyframes enter { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Cartão herói ---------- */
+.hero-xl {
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(163,230,53,.22) 0%, rgba(163,230,53,0) 55%),
+    linear-gradient(160deg, #1A2433 0%, #0F1621 70%);
+  border: 1px solid rgba(163,230,53,.22); border-radius: 28px; padding: 22px; box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+.hero-xl::after { display: none; }
+.hero-xl .eyebrow { display: inline-flex; align-items: center; gap: 6px; }
+.hero-xl .eyebrow .ic { width: 18px; height: 18px; }
+.hero-title { font-size: 1.85rem; font-weight: 800; line-height: 1.1; margin: 2px 0; }
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; }
+.hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.hero-meta span { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.08); color: #E5E7EB; padding: 6px 12px; border-radius: 99px; font-weight: 700; font-size: .85rem; }
+.hero-meta .ic { width: 16px; height: 16px; color: var(--lime); }
+.ring-txt { display: flex; flex-direction: column; align-items: center; line-height: 1; color: #fff; }
+.ring-txt b { font-family: var(--font-head); font-size: 1.9rem; font-weight: 800; }
+.ring-txt b span { font-size: 1rem; color: #94A3B8; }
+.ring-txt small { color: #CBD5E1; font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
+.hero-strip { display: flex; gap: 8px; align-items: center; }
+.hero-strip img { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; background: #fff; }
+.hero-strip span { width: 64px; height: 64px; border-radius: 16px; background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: var(--font-head); }
+.hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.hero-stats > div { background: rgba(255,255,255,.06); border-radius: 18px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.hero-stats b { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.1; }
+.hero-stats span { font-size: .78rem; color: #CBD5E1; font-weight: 700; }
+.hero-link { color: #D9F99D !important; align-self: center; }
+.feature-title { font-size: 1.4rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.feature-title b { color: var(--lime); }
+.btn-glass { --b: rgba(255,255,255,.1); --c: #fff; --bd: rgba(255,255,255,.18); }
+@media (max-width: 400px) { .hero-grid { grid-template-columns: 1fr; } .hero-grid > div:last-child { justify-self: start; } }
+
+/* ---------- Números do dia ---------- */
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tile {
+  position: relative; display: flex; flex-direction: column; gap: 4px; padding: 16px; min-height: 132px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 22px; color: var(--text); box-shadow: var(--shadow);
+  transition: transform .15s var(--ease), border-color .15s;
+}
+.tile:hover { border-color: var(--tc); }
+.tile:active { transform: scale(.98); }
+.tile-cover { position: absolute; inset: 0; border-radius: inherit; z-index: 1; }
+.tile-cover:focus-visible { box-shadow: var(--focus); }
+.tile-ic { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: var(--tc); background: color-mix(in srgb, var(--tc) 16%, transparent); margin-bottom: 6px; }
+.tile-ic .ic { width: 24px; height: 24px; }
+.tile-v { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+.tile-v small { font-family: var(--font); font-size: .9rem; font-weight: 700; color: var(--text-2); margin-left: 3px; }
+.tile-l { font-size: .85rem; font-weight: 700; color: var(--text-2); }
+.tile-add { position: absolute; z-index: 2; top: 12px; right: 12px; width: 48px; height: 48px; border-radius: 14px; border: 0; background: var(--tc); color: #0E141F; display: grid; place-items: center; cursor: pointer; }
+.tile-add .ic { width: 24px; height: 24px; }
+.tile-add:active { transform: scale(.92); }
+
+/* ---------- Painel no computador ---------- */
+.dash { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 1024px) {
+  .dash { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; }
+  .tiles { grid-template-columns: repeat(4, 1fr); }
+  .tile { min-height: 140px; }
+}
+.card-feature { border-color: color-mix(in srgb, var(--accent-ink) 35%, var(--border)); }
+.card-feature .chart .line { stroke: var(--lime-strong); }
+:root[data-theme="dark"] .card-feature .chart .line { stroke: var(--lime); }
+.card { border-radius: 24px; }
+
+/* ---------- Conquistas e recordes ---------- */
+.badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.badge { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border-radius: 16px; background: var(--surface-2); color: var(--text-3); opacity: .6; }
+.badge b { font-family: var(--font-head); font-size: 1.15rem; color: var(--text-2); }
+.badge small { font-size: .7rem; font-weight: 700; }
+.badge-ic .ic { width: 22px; height: 22px; }
+.badge.on { opacity: 1; background: color-mix(in srgb, var(--c-fogo) 18%, var(--surface)); color: var(--c-fogo); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c-fogo) 55%, transparent); }
+.badge.on b { color: var(--text); }
+.medal { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface-2); color: var(--text-3); flex: 0 0 auto; }
+.medal .ic { width: 22px; height: 22px; }
+.m-ouro { background: #FDE68A; color: #92400E; } .m-prata { background: #E5E7EB; color: #374151; } .m-bronze { background: #FED7AA; color: #9A3412; }
+.pr-v { font-family: var(--font-head); font-size: 1.1rem; white-space: nowrap; }
+.pr-v small { font-family: var(--font); font-size: .8rem; color: var(--text-2); }
+
+/* ---------- Recompensa no fim do treino ---------- */
+.reward { display: flex; gap: 16px; align-items: center; border: 1.5px solid color-mix(in srgb, var(--c-fogo) 55%, transparent); background: color-mix(in srgb, var(--c-fogo) 12%, var(--surface)); }
+.reward > .ic { width: 44px; height: 44px; color: var(--c-fogo); flex: 0 0 auto; }
+.reward b { font-family: var(--font-head); font-size: 1.3rem; }
+.reward-pr { border-color: color-mix(in srgb, var(--c-comida) 60%, transparent); background: color-mix(in srgb, var(--c-comida) 12%, var(--surface)); }
+.reward-pr > .ic { color: var(--c-comida); }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; overflow: hidden; }
+.confetti i { position: absolute; top: -20px; left: var(--x); width: 10px; height: 16px; background: var(--c); border-radius: 3px; transform: rotate(var(--r)); animation: fall 2.6s var(--d) cubic-bezier(.3,.6,.4,1) forwards; opacity: 0; }
+@keyframes fall { 0% { opacity: 1; } 100% { opacity: 0; transform: translateY(105vh) rotate(calc(var(--r) + 540deg)); } }
+.trophy { box-shadow: 0 0 0 10px rgba(163,230,53,.15), 0 0 60px rgba(163,230,53,.45); }
+
+/* Cabeçalho e navegação com acabamento */
+:root[data-theme="dark"] .topbar { background: color-mix(in srgb, var(--bg) 88%, transparent); }
+:root[data-theme="dark"] .tabbar { background: #121A27; border-top-color: var(--border); }
+:root[data-theme="dark"] .tab[aria-current="page"] { background: rgba(163,230,53,.14); color: #fff; }
+:root[data-theme="dark"] .sidebar { background: #121A27; }
+.tab[aria-current="page"] .ic { transform: translateY(-1px); }
+/* aviso no treino: abaixo do cabeçalho, sem bloquear toques (só o "Desfazer" é clicável) */
+body.live #toast { top: calc(max(12px, env(safe-area-inset-top)) + 64px); }
+.toast { pointer-events: none; }
+.toast .btn { pointer-events: auto; }
+.chart text { font-size: 14px; font-weight: 700; }
+.chart .lbl-strong { font-size: 15px; font-family: var(--font-head); }
+.chip { white-space: nowrap; }
+.card-head h2 { min-width: 0; }
+.novo { color: var(--c-comida); }

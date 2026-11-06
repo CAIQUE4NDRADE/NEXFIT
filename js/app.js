@@ -26,10 +26,10 @@ const NAV = [['hoje', 'Hoje', 'house'], ['treinar', 'Treinar', 'dumbbell'], ['co
 // ---------- tema e letra ----------
 export function applyPrefs() {
   const r = document.documentElement;
-  r.dataset.theme = state.prefs.tema || 'light';
+  r.dataset.theme = state.prefs.tema || 'dark';
   r.style.setProperty('--scale', state.prefs.letra || 1);
   const dark = r.dataset.theme === 'dark' || (r.dataset.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111827' : '#F4F6F8');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0B111C' : '#F4F6F8');
 }
 
 // ---------- rotas ----------

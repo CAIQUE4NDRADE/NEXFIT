@@ -14,7 +14,7 @@ export function emptyState() {
     v: 3,
     criadoEm: new Date().toISOString(),
     perfil: { nome: '', metaKcal: null, metaProt: null, metaCarb: null, metaGord: null, metaAgua: 2000, descanso: 90, pesoMeta: null },
-    prefs: { tema: 'light', letra: 1, voz: true, som: true, vibrar: true, telaAcesa: true, avisoSaude: false, boasVindas: false },
+    prefs: { tema: 'dark', temaEscolhido: false, letra: 1, voz: true, som: true, vibrar: true, telaAcesa: true, avisoSaude: false, boasVindas: false },
     treinos: [],          // {id, nome, dias:[0-6], exs:[{id, exId, nome, series, reps, carga, descanso, obs}]}
     sessoes: [],          // {id, treinoId, nome, data, inicio, fim, sets:[{i, nome, n, kg, reps, t}], sentiu, cardio}
     aoVivo: null,         // {sessaoId, treinoId, i}
@@ -40,7 +40,9 @@ export function normalize(s) {
     return emptyState();
   }
   const e = emptyState();
-  return { ...e, ...s, perfil: { ...e.perfil, ...s.perfil }, prefs: { ...e.prefs, ...s.prefs } };
+  const prefs = { ...e.prefs, ...s.prefs };
+  if (!prefs.temaEscolhido) prefs.tema = 'dark';          // 2.1: escuro é o padrão da marca
+  return { ...e, ...s, perfil: { ...e.perfil, ...s.perfil }, prefs };
 }
 
 const DIA_IDX = { domingo: 0, segunda: 1, 'terça': 2, terca: 2, quarta: 3, quinta: 4, sexta: 5, 'sábado': 6, sabado: 6 };

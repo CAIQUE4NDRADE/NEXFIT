@@ -4,7 +4,7 @@ import { icon } from '../icons.js';
 import { act, btn, card, cardHead, seg, empty, openSheet, closeSheet, sheetHead, toast, confirmar, notice } from '../ui.js';
 import { esc, fmt, fmtInt, fmtDate, today, addDays, parseNum, uid, DIAS_CURTO, weekday, relDay, fmtDuration } from '../util.js';
 import { lineChart, barChart } from '../charts.js';
-import { recordes, historicoCarga, exerciciosFeitos, treinosPorSemana, comparar, volumeSessao, duracaoSessao, pesoAtual } from '../stats.js';
+import { recordes, historicoCarga, exerciciosFeitos, treinosPorSemana, comparar, volumeSessao, duracaoSessao, pesoAtual, resumoMes, melhorSequencia, sequencia, MARCOS } from '../stats.js';
 import { refresh } from '../app.js';
 import { abrirPeso } from './hoje.js';
 
@@ -17,16 +17,38 @@ const delta = (a, b, un = '', inv = false) => {
   return `<span class="chip ${bom ? 'chip-ok' : 'chip-warn'}">${d > 0 ? '▲' : '▼'} ${fmt(Math.abs(d))}${un}</span>`;
 };
 
+function destaqueMes() {
+  const m = resumoMes(), a = m.atual, b = m.anterior;
+  const mes = new Date().toLocaleDateString('pt-BR', { month: 'long' });
+  const pct = b.volume ? Math.round((a.volume - b.volume) / b.volume * 100) : null;
+  const frase = !a.dias ? 'Seu primeiro treino do mês está esperando por você.'
+    : pct == null ? `Você já treinou ${a.dias} ${a.dias === 1 ? 'dia' : 'dias'} este mês. Continue assim!`
+    : pct >= 0 ? `Você levantou <b>${pct}% a mais</b> que no mesmo período do mês passado.` : `Até agora, ${Math.abs(pct)}% abaixo do mesmo período do mês passado. Ainda dá tempo!`;
+  return card(`<span class="eyebrow">${icon('sparkles')} Seu ${mes}</span>
+    <p class="feature-title">${frase}</p>
+    <div class="hero-stats"><div><b class="num">${a.dias}</b><span>dias treinados</span></div><div><b class="num">${fmtInt(a.volume)}</b><span>kg levantados</span></div><div><b class="num">${m.prsMes}</b><span>recordes novos</span></div></div>`, 'hero hero-xl stack');
+}
+function conquistas() {
+  const best = melhorSequencia(), atual = sequencia();
+  return card(`${cardHead('Conquistas', 'trophy', `<span class="chip">${icon('flame')} recorde: ${best} ${best === 1 ? 'dia' : 'dias'}</span>`)}
+    <div class="badges">${MARCOS.map(n => `<div class="badge ${best >= n ? 'on' : ''}" aria-label="${n} dias seguidos ${best >= n ? 'conquistado' : 'bloqueado'}"><span class="badge-ic">${icon(best >= n ? 'flame' : 'circle-help')}</span><b class="num">${n}</b><small>dias</small></div>`).join('')}</div>
+    <p class="small muted" style="margin-top:10px">Sequência atual: <b>${atual} ${atual === 1 ? 'dia ativo' : 'dias ativos'}</b>. Dia ativo = treinou, anotou comida ou bebeu água.</p>`);
+}
 function resumo() {
-  const sem = treinosPorSemana(8), cmp = comparar(periodo), prs = recordes();
-  return `${card(`${cardHead('Frequência', 'calendar')}${barChart(sem.map(w => ({ label: fmtDate(w.ini, { day: '2-digit', month: '2-digit' }), y: w.qtd })), { title: 'Dias treinados por semana', max: 7 })}<p class="small muted">Dias treinados em cada semana (últimas 8).</p>`)}
-  ${card(`${cardHead('Comparação', 'trending-up', seg('ev-per', [['7', '7 dias'], ['30', '30 dias'], ['90', '90 dias']], String(periodo)))}
-    <div class="cmp">
+  const sem = treinosPorSemana(8), cmp = comparar(periodo), prs = recordes().sort((a, b) => b.data.localeCompare(a.data));
+  const semana = addDays(today(), -7);
+  return `${destaqueMes()}
+  <div class="grid-2">
+  ${card(`${cardHead('Frequência', 'calendar')}${barChart(sem.map(w => ({ label: fmtDate(w.ini, { day: '2-digit', month: '2-digit' }), y: w.qtd })), { title: 'Dias treinados por semana', max: 7 })}<p class="small muted">Dias treinados em cada semana (últimas 8).</p>`)}
+  ${conquistas()}
+  </div>
+  ${card(`${cardHead('Comparação', 'trending-up')}${seg('ev-per', [['7', '7 dias'], ['30', '30 dias'], ['90', '90 dias']], String(periodo))}
+    <div class="cmp" style="margin-top:8px">
       <div class="cmp-row"><span>Dias treinados</span><b class="num">${cmp.atual.treinos}</b>${delta(cmp.atual.treinos, cmp.anterior.treinos)}</div>
       <div class="cmp-row"><span>Peso levantado (volume)</span><b class="num">${fmtInt(cmp.atual.volume)} kg</b>${delta(cmp.atual.volume, cmp.anterior.volume, ' kg')}</div>
       <div class="cmp-row"><span>Peso corporal</span><b class="num">${cmp.atual.peso != null ? fmt(cmp.atual.peso) + ' kg' : '—'}</b>${delta(cmp.atual.peso, cmp.anterior.peso, ' kg', !!state.perfil.pesoMeta && state.perfil.pesoMeta < (cmp.atual.peso || 0))}</div>
     </div><p class="small muted">Últimos ${periodo} dias comparados com os ${periodo} dias anteriores.</p>`)}
-  ${card(`${cardHead('Recordes pessoais', 'trophy')}${prs.length ? `<div class="list">${prs.map(r => `<button class="list-item list-btn" data-act="ev-ex" data-n="${esc(r.nome)}"><span class="grow"><span class="title">${esc(r.nome)}</span><br><span class="sub">${relDay(r.data)}</span></span><b class="num">${fmt(r.kg)} kg × ${r.reps}</b>${icon('chevron-right')}</button>`).join('')}</div>` : empty('trophy', 'Nenhum recorde ainda', 'Seus maiores pesos em cada exercício aparecem aqui.')}`)}`;
+  ${card(`${cardHead('Recordes pessoais', 'trophy')}${prs.length ? `<div class="list">${prs.map((r, i) => `<button class="list-item list-btn" data-act="ev-ex" data-n="${esc(r.nome)}"><span class="medal ${r.data >= semana ? 'm-ouro' : ''}">${icon('trophy')}</span><span class="grow"><span class="title">${esc(r.nome)}</span><br><span class="sub">${r.data >= semana ? '<b class="novo">Novo!</b> · ' : ''}${relDay(r.data)}</span></span><b class="num pr-v">${fmt(r.kg)} kg <small>× ${r.reps}</small></b>${icon('chevron-right')}</button>`).join('')}</div>` : empty('trophy', 'Nenhum recorde ainda', 'Seus maiores pesos em cada exercício aparecem aqui.')}`)}`;
 }
 
 function calendario() {

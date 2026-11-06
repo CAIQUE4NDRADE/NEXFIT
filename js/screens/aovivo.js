@@ -10,7 +10,7 @@ import { act, btn, bar, stepper, openSheet, closeSheet, sheetHead, toast, notice
 import { esc, fmt, fmtDate, fmtDuration, fmtInt, repsAlvo } from '../util.js';
 import { escolherExercicio } from './biblioteca.js';
 import { alternativas } from '../fichas.js';
-import { volumeSessao, duracaoSessao, recordes } from '../stats.js';
+import { volumeSessao, duracaoSessao, recordes, sequencia, MARCOS } from '../stats.js';
 import { prime, falar } from '../alerts.js';
 import { go, refresh } from '../app.js';
 import { compartilharCard } from '../sharecard.js';
@@ -198,14 +198,19 @@ act('fim-sent', el => {
 });
 act('fim-salvar', () => {
   const min = parseInt(document.getElementById('fim-cardio').value, 10);
-  const prsAntes = new Map(recordes().map(r => [r.nome, r.kg]));
+  const sid = W.atual()?.s.id;
+  const prsAntes = new Map(recordes(sid).map(r => [r.nome, r.kg]));    // recordes SEM o treino de hoje
+  const seqAntes = sequencia(sid);
   const s = W.finalizar({ sentiu: act.sentiu || null, dor: act.sentiu === 'dor' ? { onde: document.getElementById('fim-onde').value } : null, cardio: min > 0 ? { tipo: 'Cardio', min } : null });
   act.sentiu = null;
   closeSheet();
+  document.getElementById('toast').innerHTML = '';   // o "Desfazer" da última série não vale mais
   if (!s) return;
   s.novosRecordes = recordes().filter(r => r.data === s.data && r.kg > (prsAntes.get(r.nome) || 0)).map(r => `${r.nome}: ${fmt(r.kg)} kg`);
+  const seq = sequencia();
+  s.marco = seq > seqAntes && MARCOS.includes(seq) ? seq : null;
   save('treino');
-  falar('Treino salvo. Muito bem!');
+  falar(s.novosRecordes.length ? 'Treino salvo. E você bateu um recorde! Parabéns!' : s.marco ? `Treino salvo. ${seq} dias seguidos! Parabéns!` : 'Treino salvo. Muito bem!');
   go('#/treino?resumo=' + s.id);
 });
 
@@ -213,7 +218,9 @@ act('fim-salvar', () => {
 function resumo(s) {
   const vol = volumeSessao(s), dur = duracaoSessao(s);
   const exs = [...new Set(s.sets.map(x => x.nome))];
+  const festa = s.novosRecordes?.length || s.marco;
   return `<div class="stack live-resumo">
+    ${festa ? `<div class="confetti" aria-hidden="true">${Array.from({ length: 36 }, (_, i) => `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * .18}s;--r:${(i * 53) % 360}deg;--c:${['#A3E635', '#FBBF24', '#38BDF8', '#F472B6', '#fff'][i % 5]}"></i>`).join('')}</div>` : ''}
     <div class="center stack" style="align-items:center;padding-top:16px">
       <div class="trophy">${icon('trophy')}</div>
       <span class="eyebrow">Treino concluído</span>
@@ -225,7 +232,8 @@ function resumo(s) {
       <div class="stat"><span class="stat-label">Séries</span><span class="stat-value num">${s.sets.length}</span></div>
       <div class="stat"><span class="stat-label">Volume</span><span class="stat-value num" style="font-size:1.4rem">${fmtInt(vol)}<span class="stat-unit">kg</span></span></div>
     </div></div>
-    ${s.novosRecordes?.length ? notice(`<b>Novo recorde!</b><br>${s.novosRecordes.map(esc).join('<br>')}`, 'ok', 'trophy') : ''}
+    ${s.marco ? `<div class="card reward">${icon('flame')}<div><b class="num">${s.marco} dias seguidos!</b><p class="muted small">Nova conquista desbloqueada em Evolução.</p></div></div>` : ''}
+    ${s.novosRecordes?.length ? `<div class="card reward reward-pr">${icon('trophy')}<div><b>${s.novosRecordes.length > 1 ? 'Novos recordes!' : 'Novo recorde!'}</b>${s.novosRecordes.map(r => `<p class="num">${esc(r)}</p>`).join('')}</div></div>` : ''}
     <div class="card card-tight"><h3 style="margin-bottom:8px">Exercícios</h3><div class="list">${exs.map(n => {
       const ss = s.sets.filter(x => x.nome === n);
       return `<div class="list-item"><span class="grow"><span class="title">${esc(n)}</span><br><span class="sub num">${ss.map(x => `${fmt(x.kg)}×${x.reps}`).join(' · ')}</span></span></div>`; }).join('')}</div></div>
