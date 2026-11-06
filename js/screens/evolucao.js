@@ -7,9 +7,11 @@ import { lineChart, barChart } from '../charts.js';
 import { recordes, historicoCarga, exerciciosFeitos, treinosPorSemana, comparar, volumeSessao, duracaoSessao, pesoAtual, resumoMes, melhorSequencia, sequencia, MARCOS } from '../stats.js';
 import { refresh } from '../app.js';
 import { abrirPeso } from './hoje.js';
+import { resumoSemana, inicioSemana, frasesEvolucao } from '../intel.js';
+import { semanaCard } from './semana.js';
 
 let aba = 'resumo', exSel = null, mesRef = today().slice(0, 7), periodo = 30;
-const ABAS = [['resumo', 'Resumo'], ['calendario', 'Calendário'], ['cargas', 'Cargas'], ['peso', 'Peso'], ['medidas', 'Medidas'], ['fotos', 'Fotos']];
+const ABAS = [['resumo', 'Resumo'], ['semanas', 'Semanas'], ['calendario', 'Calendário'], ['cargas', 'Cargas'], ['peso', 'Peso'], ['medidas', 'Medidas'], ['fotos', 'Fotos']];
 const delta = (a, b, un = '', inv = false) => {
   if (a == null || b == null) return '<span class="muted small">sem dados para comparar</span>';
   const d = a - b; if (!d) return '<span class="chip">igual</span>';
@@ -38,6 +40,7 @@ function resumo() {
   const sem = treinosPorSemana(8), cmp = comparar(periodo), prs = recordes().sort((a, b) => b.data.localeCompare(a.data));
   const semana = addDays(today(), -7);
   return `${destaqueMes()}
+  ${analise()}
   <div class="grid-2">
   ${card(`${cardHead('Frequência', 'calendar')}${barChart(sem.map(w => ({ label: fmtDate(w.ini, { day: '2-digit', month: '2-digit' }), y: w.qtd })), { title: 'Dias treinados por semana', max: 7 })}<p class="small muted">Dias treinados em cada semana (últimas 8).</p>`)}
   ${conquistas()}
@@ -107,8 +110,22 @@ function fotos() {
     ${fs.length ? `<div class="photos">${fs.map(f => `<figure><img src="${f.data}" alt="Foto de ${fmtDate(f.date)}" loading="lazy"><figcaption><span>${fmtDate(f.date, { day: '2-digit', month: 'short', year: '2-digit' })}${f.pose ? ' · ' + esc(f.pose) : ''}</span>${btn('', { act: 'ev-foto-del', ic: 'trash-2', variant: 'ghost', size: 'sm', srLabel: 'Apagar foto', attrs: { 'data-id': f.id } })}</figcaption></figure>`).join('')}</div>` : empty('camera', 'Nenhuma foto ainda', 'Tire uma foto de frente e uma de lado a cada mês.')}`);
 }
 
+function semanas() {
+  const atual = inicioSemana();
+  const lista = Array.from({ length: 8 }, (_, k) => addDays(atual, -7 * k)).map(ini => ({ ini, r: resumoSemana(ini) })).filter(x => x.r.temDados);
+  if (!lista.length) return card(empty('calendar', 'Nenhuma semana registrada', 'Treine ou anote a comida e o resumo de cada semana aparece aqui. Todo domingo ele também aparece na tela Hoje.'));
+  return lista.map(({ ini, r }) => semanaCard(r, { parcial: ini === atual })).join('');
+}
+function analise() {
+  const fs = frasesEvolucao();
+  const COR = { bom: 'ok', atencao: 'warn', info: 'info' };
+  return card(`${cardHead('O que seus números dizem', 'sparkles')}
+    <div class="insights">${fs.map(f => `<div class="insight ins-${COR[f.tom]}"><span class="prog-ic">${icon(f.ic)}</span><div><b>${esc(f.titulo)}</b><p class="small">${esc(f.texto)}</p></div></div>`).join('')}</div>
+    <p class="small muted" style="margin-top:12px">Análise automática das últimas 4 semanas, feita com os dados que você anotou. Não substitui seu personal, nutricionista ou médico.</p>`);
+}
+
 function render() {
-  const body = { resumo, calendario, cargas, peso, medidas, fotos }[aba]();
+  const body = { resumo, semanas, calendario, cargas, peso, medidas, fotos }[aba]();
   return `<div class="page-head"><div><h1>Evolução</h1><p>Seu progresso ao longo do tempo.</p></div></div>
   <div class="stack">${seg('ev-aba', ABAS, aba)}${body}</div>`;
 }

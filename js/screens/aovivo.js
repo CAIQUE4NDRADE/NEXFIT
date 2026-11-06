@@ -14,6 +14,7 @@ import { volumeSessao, duracaoSessao, recordes, sequencia, MARCOS } from '../sta
 import { prime, falar } from '../alerts.js';
 import { go, refresh } from '../app.js';
 import { compartilharCard } from '../sharecard.js';
+import { progressao } from '../intel.js';
 
 function semTreino(r) {
   const sid = r.query.resumo;
@@ -35,6 +36,7 @@ function render(r) {
   const serieAtual = Math.min(feitos.length + 1, e.series);
   const tudo = W.proximoIncompleto(s) === -1;
   const antes = sug.antes;
+  const prog = !feitos.length ? progressao(e, s.id) : null;   // conselho de carga antes da 1ª série
 
   return `<div class="live">
   <div class="live-top">
@@ -68,7 +70,7 @@ function render(r) {
     ${stepper({ id: 'lv-kg', label: 'Carga', value: sug.kg === '' ? '' : String(sug.kg).replace('.', ','), step: 1, max: 500, unit: 'kg', decimals: true })}
     ${stepper({ id: 'lv-reps', label: /\bs$|seg/.test(e.reps) ? 'Tempo' : 'Repetições', value: sug.reps, step: /\bs$|seg/.test(e.reps) ? 5 : 1, max: 600, unit: /\bs$|seg/.test(e.reps) ? 'segundos' : 'vezes' })}
   </div>
-  <p class="live-last small">${antes ? `${icon('rotate-ccw')} Última vez (${fmtDate(antes.data)}): ${antes.sets.slice(0, 4).map(x => `<b class="num">${fmt(x.kg)} kg × ${x.reps}</b>`).join(' · ')}` : `${icon('sparkles')} Primeira vez neste exercício. Comece leve.`}</p>
+  ${prog ? progCard(prog, sug.kg) : `<p class="live-last small">${antes ? `${icon('rotate-ccw')} Última vez (${fmtDate(antes.data)}): ${antes.sets.slice(0, 4).map(x => `<b class="num">${fmt(x.kg)} kg × ${x.reps}</b>`).join(' · ')}` : `${icon('sparkles')} Primeira vez neste exercício. Comece leve.`}</p>`}
   <button class="btn btn-primary btn-xl btn-block live-go" data-act="lv-serie">${icon('check')}<span>TERMINEI A SÉRIE</span></button>`}
 
   ${feitos.length ? `<div class="live-done" aria-label="Séries feitas">
@@ -84,6 +86,24 @@ function render(r) {
   </div>
   </div>`;
 }
+
+const PROG_UI = { subir: ['trending-up', 'ok'], manter: ['check', 'info'], abaixo: ['triangle-alert', 'warn'], abaixo2: ['triangle-alert', 'warn'], queda: ['heart-pulse', 'warn'], dor: ['heart-pulse', 'danger'], novo: ['sparkles', 'info'], recorde: ['trophy', 'ok'], perto: ['trophy', 'info'] };
+function progCard(p, kgAtual) {
+  const [ic, tom] = PROG_UI[p.tipo] || ['info', 'info'];
+  const usar = p.sugestao && Number(String(kgAtual).replace(',', '.')) !== p.sugestao;
+  return `<div class="prog prog-${tom}" role="note">
+    <span class="prog-ic">${icon(ic)}</span>
+    <div class="grow"><b>${esc(p.titulo)}</b><p class="small">${esc(p.texto)}</p>
+      ${p.ultima ? `<p class="small muted num">Última vez (${fmtDate(p.ultima.data)}): ${esc(p.ultima.linha)}</p>` : ''}
+      ${usar ? `<button class="btn btn-primary btn-sm prog-btn" data-act="lv-usar" data-kg="${p.sugestao}">${icon('trending-up')}<span>Usar ${fmt(p.sugestao)} kg</span></button>` : ''}
+    </div></div>`;
+}
+act('lv-usar', el => {
+  const inp = document.getElementById('lv-kg'); if (!inp) return;
+  inp.value = String(el.dataset.kg).replace('.', ',');
+  el.outerHTML = `<span class="small" style="color:var(--ok);font-weight:700">${icon('check')} Carga ajustada para ${fmt(+el.dataset.kg)} kg</span>`;
+  navigator.vibrate?.(15);
+});
 
 function after(root) {
   // Enter no teclado numérico = terminei

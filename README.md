@@ -9,6 +9,7 @@
 - **Treino ao vivo** — um exercício por vez, foto, carga da última vez, botão gigante *TERMINEI A SÉRIE*, desfazer, corrigir, trocar exercício (aparelho ocupado).
 - **Cronômetro automático** — começa sozinho ao terminar a série, ±15 s, pausar, pular; conta pelo relógio real, sobrevive à tela bloqueada e ao recarregar; avisa com voz, som, vibração e notificação.
 - **Comida e água** — Tabela TACO (591 alimentos), medidas caseiras (concha, colher, unidade), calorias e macros, copos de água, repetir refeição de ontem, alimento pelo rótulo.
+- **Inteligência NEXFIT (por regras, sem custo)** — conselho de carga antes de cada exercício (subir, manter, rever, atenção à queda ou à dor), resumo da semana todo domingo com destaques e foco da próxima semana, e frases explicando a evolução das últimas 4 semanas.
 - **Evolução** — peso, cargas por exercício, recordes, medidas, fotos (antes/depois), calendário, frequência semanal, comparação entre períodos.
 - **Acessível** — tema claro/escuro, letra Normal/Grande/Muito grande, botões de no mínimo 56 px, texto sempre ao lado do ícone, contraste AA.
 - **Funciona sem internet** (PWA) e com login opcional (Supabase) para usar em vários aparelhos.
@@ -27,6 +28,7 @@ js/workout.js         lógica do treino ao vivo
 js/fichas.js          lógica das fichas (criar, importar, trocar)
 js/parser.js          leitor do texto do personal
 js/stats.js           cálculos (recordes, sequência, comparação)
+js/intel.js           regras de progressão, resumo semanal e frases de evolução
 js/cloud.js           login e sincronização (Supabase)
 js/ui.js, charts.js   componentes e gráficos reutilizáveis
 js/screens/*.js       telas: hoje, treinar, aovivo, importar, ficha, biblioteca, comida, evolucao, ajustes

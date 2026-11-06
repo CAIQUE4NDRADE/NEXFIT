@@ -10,6 +10,8 @@ import * as W from '../workout.js';
 import { iniciarTreino } from './treinar.js';
 import { addAgua, COPO } from './comida.js';
 import { refresh } from '../app.js';
+import { semanaParaMostrar, resumoSemana } from '../intel.js';
+import { semanaCard } from './semana.js';
 
 function metaSemana() {
   return new Set(state.treinos.flatMap(t => t.dias || [])).size || Math.min(5, Math.max(3, state.treinos.length));
@@ -87,6 +89,13 @@ function semana() {
     <p class="small muted" style="margin-top:10px">Dia ativo = treinou, anotou comida ou bebeu água.</p>`);
 }
 
+function resumoDaSemana() {
+  const ini = semanaParaMostrar();
+  if (!ini || state.prefs.semanaVista === ini) return '';
+  const r = resumoSemana(ini);
+  return r.temDados ? semanaCard(r, { destaque: true }) : '';
+}
+
 function render() {
   const nome = state.perfil.nome;
   return `
@@ -95,7 +104,7 @@ function render() {
     ${!nome ? card(`<form class="row wrap" data-submit="hj-nome" style="align-items:flex-end"><label class="field grow"><span>Como podemos te chamar?</span><input class="input" id="hj-nome" autocomplete="given-name" placeholder="Seu nome"></label>${btn('Salvar', { variant: 'primary', size: 'lg', attrs: { type: 'submit' } }).replace('type="button"', '')}</form>`) : ''}
     ${state.prefs.boasVindas ? notice(`<b>Seus dados do app antigo foram trazidos.</b> Treinos, cargas, peso e fotos estão aqui. ${btn('Ok', { act: 'hj-bv', size: 'sm' })}`, 'ok', 'circle-check') : ''}
     <div class="dash">
-      <div class="dash-main stack">${hero()}${numeros()}</div>
+      <div class="dash-main stack">${hero()}${resumoDaSemana()}${numeros()}</div>
       <div class="dash-side stack">${semana()}${destaque()}</div>
     </div>
     <p class="credits">NEXFIT · desenvolvido por <b>Caique Andrade</b></p>
