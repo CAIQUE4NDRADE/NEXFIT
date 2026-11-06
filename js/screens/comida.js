@@ -49,7 +49,7 @@ function render() {
 
     ${card(`${cardHead('Água', 'glass-water', `<span class="chip">${fmt(agua / 1000)} de ${fmt(metaAgua / 1000)} L</span>`)}
       <div class="cups" role="img" aria-label="${copos} de ${metaCopos} copos">${Array.from({ length: Math.max(metaCopos, copos) }, (_, i) => `<span class="cup ${i < copos ? 'on' : ''}">${icon('glass-water')}</span>`).join('')}</div>
-      <div class="row" style="margin-top:14px">${btn('Tirar 1', { act: 'cm-agua', ic: 'minus', size: 'lg', attrs: { 'data-ml': -COPO, disabled: !agua } })}${btn('Bebi 1 copo', { act: 'cm-agua', ic: 'plus', variant: 'primary', size: 'lg', block: true, attrs: { 'data-ml': COPO } })}</div>
+      <div class="row" style="margin-top:14px">${btn('', { act: 'cm-agua', ic: 'minus', size: 'lg', srLabel: 'Tirar 1 copo', attrs: { 'data-ml': -COPO, disabled: !agua } })}${btn('Bebi 1 copo', { act: 'cm-agua', ic: 'plus', variant: 'primary', size: 'lg', block: true, attrs: { 'data-ml': COPO } })}</div>
       <p class="small muted" style="margin-top:8px">1 copo = ${COPO} ml</p>`)}
 
     ${REFEICOES.map(ref => {

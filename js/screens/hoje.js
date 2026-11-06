@@ -18,8 +18,8 @@ function metaSemana() {
 }
 function anelSemana() {
   const feitos = semanaAtual().filter(d => d.treinou).length, meta = metaSemana();
-  return ring(feitos / meta * 100, { size: 116, stroke: 11, color: 'var(--lime)', label: `${feitos} de ${meta} treinos na semana`,
-    center: `<div class="ring-txt"><b class="num">${feitos}<span>/${meta}</span></b><small>semana</small></div>` });
+  return `<div class="ring-wrap">${ring(feitos / meta * 100, { size: 116, stroke: 11, color: 'var(--lime)', label: `${feitos} de ${meta} treinos na semana`,
+    center: `<div class="ring-txt"><b class="num">${feitos}<span>/${meta}</span></b></div>` })}<span class="ring-cap">treinos na semana</span></div>`;
 }
 function hero() {
   const a = W.atual();

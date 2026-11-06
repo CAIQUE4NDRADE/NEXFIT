@@ -177,3 +177,85 @@ body.live #toast { top: calc(max(12px, env(safe-area-inset-top)) + 64px); }
 .ins-ok .prog-ic { background: var(--ok-soft); color: var(--ok); }
 .ins-warn .prog-ic { background: var(--warn-soft); color: var(--warn); }
 .ins-info .prog-ic { background: var(--surface); color: var(--accent-ink); }
+
+/* =====================================================================
+   Ajustes para celular (testado em 360 px e 320 px)
+   ===================================================================== */
+/* nada pode passar da borda */
+.grid-2 > *, .dash > *, .stack > * { min-width: 0; }
+.card { min-width: 0; }
+
+/* abas e filtros quebram em linhas em vez de esconder opções */
+.seg { flex-wrap: wrap; overflow: visible; }
+.seg button { flex: 1 1 auto; min-width: 0; padding: 0 12px; }
+
+/* links com área de toque confortável */
+.link-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; }
+a.link-btn { text-decoration: underline; }
+.card p a, .notice a { display: inline-block; padding: 10px 0; }
+
+/* cabeçalhos de cartão: etiqueta desce se não couber */
+.card-head { flex-wrap: wrap; row-gap: 8px; }
+
+/* textos mínimos de 14 px */
+.ring-txt small { font-size: .78rem; }
+.chart text { font-size: 15px; }
+
+@media (max-width: 480px) {
+  main { padding-left: 14px; padding-right: 14px; }
+  h1 { font-size: 1.7rem; }
+  .page-head { margin-bottom: 14px; }
+  .card { padding: 16px; border-radius: 22px; }
+
+  /* Hoje: anel menor, ao lado do título */
+  .hero-xl { padding: 18px; border-radius: 24px; }
+  .hero-grid { grid-template-columns: 1fr auto !important; gap: 10px; }
+  .hero-grid > div:last-child { justify-self: end !important; }
+  .hero-grid [role="img"] { width: 86px !important; height: 86px !important; }
+  .hero-grid [role="img"] svg { width: 86px; height: 86px; }
+  .ring-txt b { font-size: 1.45rem; }
+  .ring-txt small { font-size: .78rem; letter-spacing: .04em; }
+  .hero-title { font-size: 1.5rem; }
+  .hero-strip img, .hero-strip span { width: 52px; height: 52px; border-radius: 14px; }
+  .hero-stats b { font-size: 1.25rem; }
+  .tiles { gap: 10px; }
+  .tile { padding: 14px; min-height: 120px; }
+  .tile-v { font-size: 1.5rem; }
+
+  /* Treinar: começar e editar lado a lado, fotos menores */
+  .tr-card { gap: 12px; align-items: flex-start; }
+  .tr-imgs { width: 64px; gap: 3px; }
+  .tr-imgs img { width: 30px; height: 30px; border-radius: 8px; }
+  .tr-imgs .thumb { width: 64px; height: 64px; }
+  .tr-card h2 { font-size: 1.2rem; }
+  .tr-actions .btn { flex: 1 1 0; padding: 0 12px; }
+  .tr-actions .btn:first-child { flex-grow: 1.6; }
+
+  /* dias da semana sempre cabem */
+  .days { gap: 4px; }
+  .day { min-height: 48px; font-size: .78rem; padding: 0; border-radius: 12px; }
+
+  /* Comida: botões de água numa linha */
+  .cm-sum { gap: 16px; justify-content: center; }
+  .cm-sum .grow { min-width: 100%; }
+  .cups { gap: 6px; }
+  .cup { width: 38px; height: 46px; }
+  .card .row .btn-block { white-space: nowrap; }
+  .card .row .btn:not(.btn-block) { padding: 0 14px; white-space: nowrap; }
+
+  /* listas: ações menores à direita, texto com mais espaço */
+  .list-item { gap: 10px; }
+  .thumb { width: 56px; height: 56px; }
+
+  /* Evolução */
+  .badges { gap: 6px; }
+  .cmp-row { grid-template-columns: 1fr auto; }
+  .cmp-row > :last-child { grid-column: 1 / -1; justify-self: start; }
+  .wk-tiles { grid-template-columns: 1fr 1fr; }
+}
+.badge small { font-size: .8rem; }
+.ring-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ring-cap { color: #CBD5E1; font-size: .78rem; font-weight: 700; text-align: center; line-height: 1.2; max-width: 120px; }
+@media (max-width: 480px) { .ring-cap { max-width: 90px; } }
+@media (max-width: 480px) { .btn-xl { font-size: 1.22rem; min-height: 80px; white-space: nowrap; padding: 0 16px; } .btn-xl .ic { width: 1.4em; height: 1.4em; } }
+@media (max-width: 340px) { .btn-xl { font-size: 1.08rem; } }
