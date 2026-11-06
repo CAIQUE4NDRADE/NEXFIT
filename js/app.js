@@ -3,7 +3,7 @@
 // =====================================================================
 import { state, save, onChange } from './store.js';
 import { icon } from './icons.js';
-import { bindActions, act, toast, brandMark, btn } from './ui.js';
+import { bindActions, act, toast, brandMark, btn, fitAll } from './ui.js';
 import * as timer from './timer.js';
 import { prime, telaAcesa } from './alerts.js';
 import { fmtClock, esc } from './util.js';
@@ -53,6 +53,7 @@ export function render({ keepScroll = false } = {}) {
   try {
     main.innerHTML = scr.render(r) || '';
     scr.after?.(main, r);
+    fitAll(main);
   } catch (e) {
     console.error(e);
     main.innerHTML = `<div class="card"><h2>Algo deu errado nesta tela</h2><p class="muted" style="margin:8px 0 16px">Seus dados estão salvos. Tente voltar ao início.</p>${btn('Voltar ao início', { href: '#/hoje', variant: 'primary' })}<details style="margin-top:14px"><summary class="small muted">Detalhes técnicos</summary><pre class="small">${esc(e.stack || e)}</pre></details></div>`;

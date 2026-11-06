@@ -8,13 +8,23 @@ import { findEx } from '../lib.js';
 import * as W from '../workout.js';
 import * as F from '../fichas.js';
 import { go, refresh } from '../app.js';
+import { prime, falar } from '../alerts.js';
 
 export function iniciarTreino(treinoId) {
   const a = W.atual();
   if (a && a.s.treinoId === treinoId) return go('#/treino');
   const comecar = () => {
     if (!state.prefs.avisoSaude) return avisoSaude(() => comecar());
-    if (W.iniciar(treinoId)) go('#/treino');
+    const s = W.iniciar(treinoId);
+    if (s) {
+      prime();
+      go('#/treino');
+      const e = s.plano[0], hora = new Date(s.inicio).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      setTimeout(() => {
+        toast(`<b>Treino iniciado às ${hora}!</b> Primeiro: ${esc(e.nome)}`, { ic: 'play', ms: 4500 });
+        falar(`Treino iniciado. Primeiro exercício: ${e.nome}. ${e.tipo === 'cardio' ? e.reps : e.series + ' séries'}.`);
+      }, 250);
+    }
     else toast('Este treino ainda não tem exercícios. Toque em Editar para adicionar.', { ic: 'info' });
   };
   if (a) {

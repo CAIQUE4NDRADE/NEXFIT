@@ -261,3 +261,33 @@ a.link-btn { text-decoration: underline; }
 @media (max-width: 340px) { .btn-xl { font-size: 1.08rem; } }
 /* letra muito grande: conselho mais compacto para o botão principal caber */
 @media (max-height: 940px) { .prog p.muted { display: none; } }
+/* treino em andamento */
+.elapsed { color: var(--accent-ink); font-weight: 800; }
+.ex-on { background: color-mix(in srgb, var(--lime) 18%, var(--surface)); color: var(--text); }
+.dot-live { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(163,230,53,.7); animation: pulse 1.6s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(163,230,53,0); } 100% { box-shadow: 0 0 0 0 rgba(163,230,53,0); } }
+
+/* Treino ao vivo: foto nunca invade o texto; carga e repetições sempre com espaço igual */
+.live-media { position: relative; overflow: hidden; }
+.live-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.live-media-btns { z-index: 2; }
+.live-inputs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.live-inputs .stepper { grid-template-columns: 52px minmax(0, 1fr) 52px; }
+@media (max-width: 400px) {
+  .live-inputs { gap: 8px; }
+  .live-inputs .stepper { grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 3px; padding: 4px; }
+  .live-inputs .stepper button { height: 56px; border-radius: 12px; }
+  .live-inputs .stepper input { font-size: 1.55rem; }
+}
+@media (max-height: 720px) { .live-media img { display: none; } .live-media-btns { position: static; } }
+.live-media { height: clamp(110px, 19vh, 250px); }
+@media (max-width: 340px) { .live-inputs .stepper input { font-size: 1.3rem; } }
+/* telas baixas: conselho de carga compacto (título + botão) */
+@media (max-height: 760px) {
+  .prog { align-items: center; padding: 10px 12px; }
+  .prog p.small { display: none; }
+  .prog .grow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  .prog-btn { margin-top: 0; }
+  .prog-ic { width: 34px; height: 34px; }
+}
+@media (max-width: 340px) { .live-inputs .stepper { grid-template-columns: 40px minmax(0, 1fr) 40px; gap: 2px; } }

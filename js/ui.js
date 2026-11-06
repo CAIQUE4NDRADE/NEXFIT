@@ -57,6 +57,16 @@ export function stepper({ id, label, value, step = 1, min = 0, max = 999, unit =
     <button type="button" data-act="step" data-dir="1" aria-label="Aumentar ${esc(label)}">${icon('plus')}</button>
   </div></div>`;
 }
+/** Encolhe o número do contador quando ele fica comprido (ex.: 102,5 kg) para nunca cortar. */
+export function fitNum(inp) {
+  if (!inp || !inp.isConnected) return;
+  inp.style.fontSize = '';
+  let fs = parseFloat(getComputedStyle(inp).fontSize);
+  while (inp.scrollWidth > inp.clientWidth + 1 && fs > 13) { fs -= 1; inp.style.fontSize = fs + 'px'; }
+}
+document.addEventListener('input', e => { if (e.target.matches?.('.stepper input')) fitNum(e.target); });
+export const fitAll = (root = document) => root.querySelectorAll('.stepper input').forEach(fitNum);
+
 act('step', el => {
   const box = el.closest('[data-stepper]'), inp = box.querySelector('input');
   const step = parseFloat(box.dataset.step), min = parseFloat(box.dataset.min), max = parseFloat(box.dataset.max);
@@ -82,6 +92,7 @@ export function openSheet(html, { label = 'Janela', onClose } = {}) {
   ov._onClose = onClose;
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
+  ov.querySelectorAll('.stepper input').forEach(fitNum);
   const f = ov.querySelector('[autofocus], input, button:not([data-act="fechar"]), [tabindex]');
   setTimeout(() => f?.focus(), 30);
   return ov.querySelector('.sheet');

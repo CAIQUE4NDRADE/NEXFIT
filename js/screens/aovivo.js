@@ -7,7 +7,7 @@ import * as W from '../workout.js';
 import { findEx } from '../lib.js';
 import { icon } from '../icons.js';
 import { act, btn, bar, stepper, openSheet, closeSheet, sheetHead, toast, notice, confirmar } from '../ui.js';
-import { esc, fmt, fmtDate, fmtDuration, fmtInt, repsAlvo } from '../util.js';
+import { esc, fmt, fmtDate, fmtDuration, fmtInt, repsAlvo, fmtClock } from '../util.js';
 import { escolherExercicio } from './biblioteca.js';
 import { alternativas } from '../fichas.js';
 import { volumeSessao, duracaoSessao, recordes, sequencia, MARCOS } from '../stats.js';
@@ -42,7 +42,7 @@ function render(r) {
   return `<div class="live">
   <div class="live-top">
     ${btn('Sair', { act: 'lv-sair', ic: 'chevron-left', variant: 'ghost', size: 'sm' })}
-    <div class="live-title"><b>${esc(s.nome)}</b><span class="small muted">Exercício ${i + 1} de ${plano.length} · ${s.sets.length} de ${total} séries</span></div>
+    <div class="live-title"><b>${esc(s.nome)}</b><span class="small muted"><b class="num elapsed" data-elapsed="${esc(s.inicio)}" aria-label="Tempo de treino">⏱ ${fmtClock((Date.now() - new Date(s.inicio)) / 1000)}</b> · Exercício ${i + 1} de ${plano.length}</span></div>
     ${btn('', { act: 'lv-lista', ic: 'list', variant: 'outline', size: 'sm', srLabel: 'Ver todos os exercícios' })}
   </div>
   ${bar(pct, 'Progresso do treino')}
@@ -56,7 +56,10 @@ function render(r) {
       </div>
     </div>
     <div class="live-info">
-      <span class="chip chip-accent">${esc(lib?.grupo || e.grupo || 'Exercício')}</span>
+      <div class="row wrap" style="gap:6px"><span class="chip chip-accent">${esc(lib?.grupo || e.grupo || 'Exercício')}</span>${exCompleto
+        ? `<span class="chip chip-ok">${icon('circle-check')} Concluído</span>`
+        : feitos.length ? `<span class="chip ex-on"><i class="dot-live"></i>Em andamento · série ${feitos.length + 1} de ${e.series}</span>`
+        : `<span class="chip">${icon('play')} Pronto para começar</span>`}</div>
       <h1 id="lv-nome" class="live-name">${esc(e.nome)}</h1>
       ${exCompleto
         ? `<p class="live-serie done">${icon('circle-check')} Todas as ${e.series} séries feitas</p>`
@@ -106,7 +109,24 @@ act('lv-usar', el => {
   navigator.vibrate?.(15);
 });
 
+let relogio = null;
+function tickRelogio() {
+  const el = document.querySelector('[data-elapsed]');
+  if (!el) { clearInterval(relogio); relogio = null; return; }
+  el.textContent = '⏱ ' + fmtClock((Date.now() - new Date(el.dataset.elapsed)) / 1000);
+}
+/** Anuncia o exercício atual (tela + voz). */
+export function anunciarExercicio(prefixo = 'Agora') {
+  const a = W.atual(); if (!a) return;
+  const e = a.plano[a.av.i];
+  const feitos = W.setsDo(a.s, a.av.i).length;
+  const resto = e.tipo === 'cardio' ? e.reps : `${e.series} ${e.series === 1 ? 'série' : 'séries'}`;
+  toast(`${prefixo}: <b>${esc(e.nome)}</b> · ${esc(resto)}`, { ic: 'play', ms: 3500 });
+  falar(`${prefixo}: ${e.nome}. ${feitos ? `Série ${feitos + 1} de ${e.series}.` : resto + '.'}`);
+}
+
 function after(root) {
+  clearInterval(relogio); relogio = setInterval(tickRelogio, 1000);
   // Enter no teclado numérico = terminei
   root.querySelectorAll('#lv-kg, #lv-reps').forEach(inp => inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); root.querySelector('[data-act="lv-serie"]')?.click(); } }));
   root.querySelectorAll('#lv-kg, #lv-reps').forEach(inp => inp.addEventListener('focus', () => inp.select()));
@@ -122,7 +142,7 @@ act('lv-serie', () => {
   const r = W.registrarSerie(kg, reps); if (!r) return;
   refresh();
   if (r.acabouTudo) { falar('Parabéns! Você terminou todos os exercícios.'); toast('Último exercício feito! Toque em FINALIZAR TREINO.', { ic: 'trophy', undo: () => { W.desfazer(r.set); refresh(); } }); }
-  else toast(`Série ${r.set.n} anotada: ${fmt(r.set.kg)} kg × ${r.set.reps}`, { undo: () => { W.desfazer(r.set); refresh(); } });
+  else toast(r.mudouEx ? `Exercício concluído! Depois do descanso: <b>${esc(W.atual()?.plano[W.atual().av.i]?.nome || '')}</b>` : `Série ${r.set.n} anotada: ${fmt(r.set.kg)} kg × ${r.set.reps}`, { ic: r.mudouEx ? 'circle-check' : 'circle-check', undo: () => { W.desfazer(r.set); refresh(); } });
 });
 act('lv-trocar', () => {
   const a = W.atual(); if (!a) return;
@@ -130,8 +150,8 @@ act('lv-trocar', () => {
   escolherExercicio({ titulo: 'Trocar só no treino de hoje', sub: 'Aparelho ocupado? Escolha outro do mesmo músculo.', lista: alternativas(e),
     onPick: lib => { W.trocarHoje(i, lib); refresh(); toast(`Hoje você vai fazer ${lib.nome}. Sua ficha não muda.`, { ic: 'refresh-cw' }); } });
 });
-act('lv-prox', () => { const a = W.atual(); if (!a) return; W.irPara(a.av.i + 1); refresh(); });
-act('lv-ant', () => { const a = W.atual(); if (!a) return; W.irPara(a.av.i - 1); refresh(); });
+act('lv-prox', () => { const a = W.atual(); if (!a) return; W.irPara(a.av.i + 1); refresh(); anunciarExercicio(); });
+act('lv-ant', () => { const a = W.atual(); if (!a) return; W.irPara(a.av.i - 1); refresh(); anunciarExercicio(); });
 
 act('lv-lista', () => {
   const a = W.atual(); if (!a) return;
@@ -144,7 +164,7 @@ act('lv-lista', () => {
         ${ok ? `<span class="chip chip-ok">${icon('check')} Feito</span>` : k === a.av.i ? '<span class="chip chip-accent">Agora</span>' : ''}
       </button>`; }).join('')}</div>`, { label: 'Lista de exercícios' });
 });
-act('lv-ir', el => { W.irPara(+el.dataset.k); closeSheet(); refresh(); });
+act('lv-ir', el => { W.irPara(+el.dataset.k); closeSheet(); refresh(); anunciarExercicio(); });
 
 act('lv-como', () => {
   const a = W.atual(); if (!a) return;
