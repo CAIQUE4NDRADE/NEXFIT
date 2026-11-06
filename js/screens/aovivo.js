@@ -36,7 +36,8 @@ function render(r) {
   const serieAtual = Math.min(feitos.length + 1, e.series);
   const tudo = W.proximoIncompleto(s) === -1;
   const antes = sug.antes;
-  const prog = !feitos.length ? progressao(e, s.id) : null;   // conselho de carga antes da 1ª série
+  let prog = !feitos.length ? progressao(e, s.id) : null;   // conselho de carga antes da 1ª série
+  if (prog?.tipo === 'novo') prog = null;                    // 1ª vez: só a linha curta, para caber na tela
 
   return `<div class="live">
   <div class="live-top">

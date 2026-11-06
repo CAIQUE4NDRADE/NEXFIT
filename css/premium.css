@@ -259,3 +259,5 @@ a.link-btn { text-decoration: underline; }
 @media (max-width: 480px) { .ring-cap { max-width: 90px; } }
 @media (max-width: 480px) { .btn-xl { font-size: 1.22rem; min-height: 80px; white-space: nowrap; padding: 0 16px; } .btn-xl .ic { width: 1.4em; height: 1.4em; } }
 @media (max-width: 340px) { .btn-xl { font-size: 1.08rem; } }
+/* letra muito grande: conselho mais compacto para o botão principal caber */
+@media (max-height: 940px) { .prog p.muted { display: none; } }

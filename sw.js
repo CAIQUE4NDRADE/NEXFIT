@@ -1,5 +1,5 @@
 // NEXFIT 2.0 · service worker — app abre sem internet; imagens e fontes ficam guardadas após o 1º uso
-const VERSAO = 'nexfit-2.2.1';
+const VERSAO = 'nexfit-2.2.2';
 const APP = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png',
   './css/app.css', './css/premium.css', './css/screens.css', './css/tokens.css', './js/alerts.js', './js/app.js', './js/charts.js', './js/cloud.js', './js/data/exercises.js', './js/data/foods.js', './js/data/legacy-plans.js', './js/fichas.js', './js/intel.js', './js/screens/semana.js', './js/icons.js', './js/lib.js', './js/parser.js', './js/screens/ajustes.js', './js/screens/aovivo.js', './js/screens/biblioteca.js', './js/screens/comida.js', './js/screens/evolucao.js', './js/screens/ficha.js', './js/screens/hoje.js', './js/screens/importar.js', './js/screens/treinar.js', './js/sharecard.js', './js/stats.js', './js/store.js', './js/timer.js', './js/ui.js', './js/util.js', './js/workout.js', ];
 const CDN = ['https://cdn.jsdelivr.net', 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
